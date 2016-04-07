@@ -1,0 +1,58 @@
+!DOCTYPE html>
+<?php
+if(isset($_FILES['category_image']['name']) && $_FILES['category_image']['name']!='')
+	{
+		/* echo '<pre>';
+        print_r ($_FILES);die; */
+		$file = pathinfo($_FILES['category_image']['name']);
+		$filename = $file['filename'].time(); 
+		$extension = $file['extension']; 
+		$fileArr = array('jpg','jpeg','png');
+		if(!in_array(strtolower($extension),$fileArr))
+		{
+				$fileErr = 'Please upload only jpg,jpeg and png file.';
+				$flag = false;
+		}else
+		{
+		$flag = true;
+		$filename = $filename.'.'.$extension; 
+		$category_image = $_FILES['category_image'];
+		//$upload = new Upload();
+		// small thub
+		//$small_thumb = array('size' => array(CATEGORY_IMAGE_SMALL_THUMB_WIDTH,CATEGORY_IMAGE_SMALL_THUMB_HEIGHT), 'type' => 'resizecrop');
+		//$smallthumbResult = $upload->fileupload($category_image, CATEGORY_IMAGE_SMALL_THUMB, '', $small_thumb);
+		//large thumb
+		//$large_thumb = array('size' => array(CATEGORY_IMAGE_LARGE_THUMB_WIDTH,CATEGORY_IMAGE_LARGE_THUMB_HEIGHT), 'type' => 'resizecrop');
+		//$largethumbResult = $upload->fileupload($category_image, CATEGORY_IMAGE_LARGE_THUMB, '', $large_thumb);
+		
+		//Main file upload
+		//$res1 = $upload->fileupload($category_image, CATEGORY_IMAGE, '');
+		//print_r($upload->errors);
+		//if (!empty($upload->result) && empty($upload->errors)) {
+		
+		//$category_image  =  $upload->result;
+		//}
+		
+		 if(move_uploaded_file($_FILES["category_image"]["tmp_name"], "category_image/" . $filename))
+		{
+			$category_image = $filename;
+			
+	    } 
+	  }
+	}
+	else{
+	  $fileErr = "please upload image";
+	  $flag=false;
+	}
+?>
+<html>
+<body>
+
+<form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="category_image" id="category_image">
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+</body>
+</html>
